@@ -12,7 +12,6 @@ void main() {
   final router = FluroRouter();
   Routes.configureRoutes(router);
   Application.router = router;
-
   runApp(ToDoApp());
 }
 
@@ -109,6 +108,8 @@ class ToDoApp extends StatelessWidget {
               home: ChangeNotifierProvider<BottomNavigationBarViewModel>(
                   create: (ctx) => BottomNavigationBarViewModel(),
                   child: HomeScreen()),
+              //home: HomeScreen(),
+              //initialRoute: '/home',
               onGenerateRoute: Application.router.generator,
             );
           },

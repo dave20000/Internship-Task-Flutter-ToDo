@@ -3,7 +3,10 @@ import 'package:provider/provider.dart';
 import 'package:todo_app/route_config/application.dart';
 import 'package:todo_app/screens/profile_screen.dart';
 import 'package:todo_app/viewModels/bottom_nav_bar_viewmodel.dart';
-import 'package:todo_app/widgets/todo_list.dart';
+import 'package:todo_app/viewModels/tasks.dart';
+import 'package:todo_app/widgets/bottom_nav.dart';
+import 'package:todo_app/widgets/todo_card.dart';
+import 'package:todo_app/screens/toDo/todo_list.dart';
 
 class HomeScreen extends StatelessWidget {
   static List<Widget> _widgetOptions = <Widget>[ToDoList(), ProfileScreen()];
@@ -22,12 +25,14 @@ class HomeScreen extends StatelessWidget {
           BottomNavigationBarItem(
             icon: Icon(
               Icons.calendar_today_outlined,
+              size: 30,
             ),
             label: 'To Do',
           ),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.person_sharp,
+              size: 30,
             ),
             label: 'Profile',
           ),
@@ -45,6 +50,7 @@ class HomeScreen extends StatelessWidget {
           Application.router.navigateTo(context, "/add");
         },
         child: Icon(Icons.add),
+        mini: true,
       ),
     );
   }

@@ -53,18 +53,20 @@ class ToDoCard extends StatelessWidget {
                       task.title,
                       style: Theme.of(context).textTheme.headline1,
                       overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
                     ),
                     Container(
                         padding: const EdgeInsets.all(2.0),
                         decoration:
                             BoxDecoration(border: Border.all(color: _color)),
-                        child: Text(task.category,
+                        child: Text(task.category ?? "default category",
                             style:
                                 TextStyle(fontSize: 12, color: Colors.grey))),
                     Text(
                       task.details,
                       style: TextStyle(fontSize: 14, color: Colors.grey),
                       overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
                     ),
                   ],
                 ),

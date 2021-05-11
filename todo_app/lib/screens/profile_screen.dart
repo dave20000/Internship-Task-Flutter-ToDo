@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/viewModels/theme_context.dart';
+import 'package:todo_app/widgets/bottom_nav.dart';
 
 class ProfileScreen extends StatelessWidget {
   @override
@@ -62,6 +63,10 @@ class ProfileScreen extends StatelessWidget {
             ),
           ],
         )),
+        /*
+          BottomNav(
+            isHomeScreen: false,
+          ),*/
       ],
     );
   }

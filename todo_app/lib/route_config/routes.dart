@@ -3,7 +3,7 @@ import 'route_handler.dart';
 
 class Routes {
   static String root = "/";
-  //static String homeRoute = "/home";
+  static String homeRoute = "/home";
   static String toDoDetailRoute = "/home/:id/:colorValue";
   static String addToDoRoute = "/add";
   static String editToDoRoute = "/edit/:id";
@@ -11,7 +11,7 @@ class Routes {
 
   static void configureRoutes(FluroRouter router) {
     router.notFoundHandler = emptyHandler;
-    //router.define(homeRoute, handler: homeHandler);
+    router.define(homeRoute, handler: homeHandler);
     router.define(toDoDetailRoute, handler: toDoDetailHandler);
     router.define(addToDoRoute, handler: addHandler);
     router.define(editToDoRoute, handler: editHandler);

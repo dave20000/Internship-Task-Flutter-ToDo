@@ -1,5 +1,6 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
+import 'package:todo_app/screens/home_screen.dart';
 import 'package:todo_app/screens/profile_screen.dart';
 import 'package:todo_app/screens/toDo/add_edit_todo_screen.dart';
 import 'package:todo_app/screens/toDo/todo_detail_screen.dart';
@@ -40,4 +41,9 @@ var editHandler = new Handler(
 var profileHandler =
     new Handler(handlerFunc: (context, Map<String, dynamic> params) {
   return ProfileScreen();
+});
+
+var homeHandler =
+    new Handler(handlerFunc: (context, Map<String, dynamic> params) {
+  return HomeScreen();
 });
