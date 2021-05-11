@@ -1,10 +1,42 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ThemeContext with ChangeNotifier {
-  bool _isDark = false;
-  bool _isSystem = true;
-  bool _isLight = false;
+  SharedPreferences _pref;
+  final String darkThemeKey = "dark";
+  final String lightThemeKey = "light";
+  final String systemDefaultKey = "system";
+  bool _isDark;
+  bool _isSystem;
+  bool _isLight;
+
+  _initThemePrefs() async {
+    if (_pref == null) _pref = await SharedPreferences.getInstance();
+  }
+
+  _loadThemeTypeFromPrefes() async {
+    await _initThemePrefs();
+    _isDark = _pref.getBool(darkThemeKey) ?? false;
+    _isLight = _pref.getBool(lightThemeKey) ?? false;
+    _isSystem = _pref.getBool(systemDefaultKey) ?? true;
+    notifyListeners();
+  }
+
+  _saveThemeToPrefs() async {
+    await _initThemePrefs();
+    _pref.setBool(darkThemeKey, _isDark);
+    _pref.setBool(lightThemeKey, _isLight);
+    _pref.setBool(systemDefaultKey, _isSystem);
+  }
+
+  ThemeContext() {
+    _isLight = false;
+    _isDark = false;
+    _isSystem = true;
+    _loadThemeTypeFromPrefes();
+  }
+
   ThemeMode currentTheme() {
     return _isDark
         ? ThemeMode.dark
@@ -13,24 +45,16 @@ class ThemeContext with ChangeNotifier {
             : ThemeMode.light;
   }
 
-  bool get isDark {
-    return _isDark;
-  }
+  bool get isDark => _isDark;
+  bool get isLight => _isLight;
+  bool get isSystem => _isSystem;
 
   set isDark(bool isDark) {
     this._isDark = isDark;
   }
 
-  bool get isLight {
-    return _isLight;
-  }
-
   set isLight(bool isLight) {
     this._isLight = isLight;
-  }
-
-  bool get isSystem {
-    return _isSystem;
   }
 
   set isSystem(bool isSystem) {
@@ -39,6 +63,7 @@ class ThemeContext with ChangeNotifier {
 
   void switchTheme() {
     currentTheme();
+    _saveThemeToPrefs();
     notifyListeners();
   }
 }

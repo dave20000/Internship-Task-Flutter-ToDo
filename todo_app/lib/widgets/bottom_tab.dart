@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:todo_app/route_config/application.dart';
 
-class BottomNav extends StatelessWidget {
+class BottomTab extends StatelessWidget {
   final bool isHomeScreen;
-  BottomNav({this.isHomeScreen});
+  final Function(int) tabPressed;
+  BottomTab({this.isHomeScreen, this.tabPressed});
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(10),
+      padding: EdgeInsets.all(8),
       alignment: Alignment.bottomCenter,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -16,7 +17,7 @@ class BottomNav extends StatelessWidget {
           GestureDetector(
             onTap: () {
               if (!isHomeScreen) {
-                Application.router.navigateTo(context, "/home");
+                tabPressed(0);
               }
             },
             child: Column(
@@ -30,29 +31,31 @@ class BottomNav extends StatelessWidget {
                 ),
                 Text(
                   'To Do',
-                  style: Theme.of(context).textTheme.headline3,
+                  style: Theme.of(context).textTheme.subtitle1,
                 )
               ],
             ),
           ),
-          RawMaterialButton(
-            onPressed: () {
+          GestureDetector(
+            onTap: () {
               Application.router.navigateTo(context, "/add");
             },
-            elevation: 5.0,
-            fillColor: Theme.of(context).accentColor,
-            child: Icon(
-              Icons.add,
-              color: Colors.white,
-              size: 30,
+            child: PhysicalModel(
+              color: Theme.of(context).accentColor,
+              shadowColor: Theme.of(context).accentColor,
+              shape: BoxShape.circle,
+              elevation: 4.0,
+              child: Icon(
+                Icons.add,
+                color: Colors.white,
+                size: 30,
+              ),
             ),
-            padding: EdgeInsets.all(5.0),
-            shape: CircleBorder(),
           ),
           GestureDetector(
             onTap: () {
               if (isHomeScreen) {
-                Application.router.navigateTo(context, "/profile");
+                tabPressed(1);
               }
             },
             child: Column(
@@ -66,7 +69,7 @@ class BottomNav extends StatelessWidget {
                 ),
                 Text(
                   'Profile',
-                  style: Theme.of(context).textTheme.headline3,
+                  style: Theme.of(context).textTheme.subtitle1,
                 )
               ],
             ),

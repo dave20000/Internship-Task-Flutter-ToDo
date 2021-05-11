@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class BottomNavigationBarViewModel with ChangeNotifier {
+class BottomTabsViewModel with ChangeNotifier {
   int _currentIndex = 0;
 
   get currentIndex => _currentIndex;

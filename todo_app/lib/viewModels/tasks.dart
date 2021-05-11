@@ -24,6 +24,11 @@ class Tasks with ChangeNotifier {
     ToDoDatabase.db.add(task).then((id) => notifyListeners());
   }
 
+  /*void addTask(Task task) {
+    task.id = taskList.length + 1;
+    ToDoDatabase.db.add(task).then((id) => notifyListeners());
+  }*/
+
   void editTask(Task task) {
     ToDoDatabase.db.update(task).then((id) => notifyListeners());
   }

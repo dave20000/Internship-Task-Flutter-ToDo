@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:todo_app/models/constants.dart';
 import 'package:todo_app/models/task.dart';
 import 'package:todo_app/viewModels/tasks.dart';
 import 'package:todo_app/viewModels/todo_form_view_model.dart';
@@ -11,15 +12,6 @@ import 'package:intl/intl.dart';
 class AddEditToDoScreen extends StatelessWidget {
   final int id;
   AddEditToDoScreen({this.id});
-
-  final List<String> _categories = [
-    'Work',
-    'Fun',
-    'Sport',
-    'Study',
-    'Family',
-    'Birth'
-  ];
 
   final _formKey = GlobalKey<FormState>();
 
@@ -142,7 +134,7 @@ class AddEditToDoScreen extends StatelessWidget {
                                       onRangeSelected:
                                           (start, end, focusedDay) {
                                         formValue.startDate = start;
-                                        formValue.endDate = end;
+                                        formValue.endDate = end ?? start;
                                       })
                                   : GestureDetector(
                                       onTap: () {
@@ -206,34 +198,15 @@ class AddEditToDoScreen extends StatelessWidget {
                         ),
                         CupertinoSegmentedControl(
                           children: {
-                            0: Text(
-                              'Work',
-                              style: Theme.of(context).textTheme.headline2,
-                            ),
-                            1: Text(
-                              'Fun',
-                              style: Theme.of(context).textTheme.headline2,
-                            ),
-                            2: Text(
-                              'Sport',
-                              style: Theme.of(context).textTheme.headline2,
-                            ),
-                            3: Text(
-                              'Study',
-                              style: Theme.of(context).textTheme.headline2,
-                            ),
-                            4: Text(
-                              'Family',
-                              style: Theme.of(context).textTheme.headline2,
-                            ),
-                            5: Text(
-                              'Birth',
-                              style: Theme.of(context).textTheme.headline2,
-                            ),
+                            for (int i = 0; i < categories.length; i++)
+                              i: Text(
+                                categories[i],
+                                style: Theme.of(context).textTheme.headline2,
+                              ),
                           },
                           onValueChanged: (int val) {
                             formValue.selectedEventIndex = val;
-                            formValue.category = _categories[val];
+                            formValue.category = categories[val];
                           },
                           groupValue: formValue.selectedEventIndex,
                           selectedColor: Theme.of(context).accentColor,
@@ -328,7 +301,7 @@ class AddEditToDoScreen extends StatelessWidget {
                                         formValue.detailsController.text;
                                     taskProvider.editTask(formValue.task);
                                     Fluttertoast.showToast(
-                                        msg: "Edit task  succesfully",
+                                        msg: "Edit task succesfully",
                                         toastLength: Toast.LENGTH_SHORT,
                                         gravity: ToastGravity.TOP,
                                         timeInSecForIosWeb: 1,

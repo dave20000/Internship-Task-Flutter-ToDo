@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_app/route_config/application.dart';
 import 'package:todo_app/screens/profile_screen.dart';
-import 'package:todo_app/viewModels/bottom_nav_bar_viewmodel.dart';
-import 'package:todo_app/viewModels/tasks.dart';
-import 'package:todo_app/widgets/bottom_nav.dart';
-import 'package:todo_app/widgets/todo_card.dart';
+import 'package:todo_app/viewModels/bottom_tabs_viewmodel.dart';
+import 'package:todo_app/widgets/bottom_tab.dart';
 import 'package:todo_app/screens/toDo/todo_list.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -13,44 +10,35 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var bnb = Provider.of<BottomNavigationBarViewModel>(context);
     return Scaffold(
-      backgroundColor: Theme.of(context).backgroundColor,
-      body: _widgetOptions.elementAt(bnb.currentIndex),
-      bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: Colors.black,
-        selectedFontSize: 10,
-        unselectedFontSize: 10,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.calendar_today_outlined,
-              size: 30,
-            ),
-            label: 'To Do',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.person_sharp,
-              size: 30,
-            ),
-            label: 'Profile',
-          ),
-        ],
-        backgroundColor: Theme.of(context).backgroundColor,
-        currentIndex: bnb.currentIndex,
-        selectedIconTheme: Theme.of(context).iconTheme,
-        onTap: (index) {
-          bnb.currentIndex = index;
-        },
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Application.router.navigateTo(context, "/add");
-        },
-        child: Icon(Icons.add),
-        mini: true,
+      extendBodyBehindAppBar: true,
+      body: ChangeNotifierProvider<BottomTabsViewModel>(
+        create: (ctx) => BottomTabsViewModel(),
+        child: Consumer<BottomTabsViewModel>(
+          builder: (context, bottomTabModel, child) {
+            return Column(
+              children: [
+                const SizedBox(height: 40),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20.0, 0, 0, 0),
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: Text(
+                        bottomTabModel.currentIndex == 0 ? 'To Do' : 'Profile',
+                        style: Theme.of(context).textTheme.headline5),
+                  ),
+                ),
+                _widgetOptions[bottomTabModel.currentIndex],
+                BottomTab(
+                  isHomeScreen: bottomTabModel.currentIndex == 0 ? true : false,
+                  tabPressed: (num) {
+                    bottomTabModel.currentIndex = num;
+                  },
+                )
+              ],
+            );
+          },
+        ),
       ),
     );
   }
