@@ -31,37 +31,46 @@ class ToDoDatabase {
               details Text, taskDate Text, endDate Text,category Text)""");
   }
 
-  Future<int> add(Task task) async {
-    var dbClient = await database;
-    return await dbClient.insert('tasks', task.toMap());
+  Future<List<Task>> getTasks() async {
+    try {
+      var dbClient = await database;
+      List<Map> maps = await dbClient.query('tasks');
+      List<Task> tasks = [];
+      if (maps.length > 0) {
+        for (int i = 0; i < maps.length; i++) {
+          tasks.add(Task.fromMap(maps[i]));
+        }
+      }
+      return tasks;
+    } catch (e) {
+      close();
+      throw Exception(e.toString());
+    }
   }
 
-  Future<List<Task>> getTasks() async {
-    var dbClient = await database;
-    List<Map> maps = await dbClient.query('tasks');
-    List<Task> tasks = [];
-    if (maps.length > 0) {
-      for (int i = 0; i < maps.length; i++) {
-        tasks.add(Task.fromMap(maps[i]));
-      }
+  Future<int> add(Task task) async {
+    try {
+      var dbClient = await database;
+      return await dbClient.insert('tasks', task.toMap());
+    } catch (e) {
+      close();
+      throw Exception(e.toString());
     }
-    return tasks;
   }
 
   Future<int> update(Task task) async {
-    var dbClient = await database;
-    return await dbClient.update(
-      'tasks',
-      task.toMap(),
-      where: 'id = ?',
-      whereArgs: [task.id],
-    );
-  }
-
-  Future<Task> getTaskById(int id) async {
-    final db = await database;
-    var res = await db.query("tasks", where: "id = ?", whereArgs: [id]);
-    return res.isNotEmpty ? Task.fromMap(res.first) : null;
+    try {
+      var dbClient = await database;
+      return await dbClient.update(
+        'tasks',
+        task.toMap(),
+        where: 'id = ?',
+        whereArgs: [task.id],
+      );
+    } catch (e) {
+      close();
+      throw Exception(e.toString());
+    }
   }
 
   Future close() async {

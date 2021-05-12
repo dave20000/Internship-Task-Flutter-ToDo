@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_app/viewModels/theme_context.dart';
+import 'package:todo_app/enums/theme_type.dart';
+import 'package:todo_app/view_models/theme_context_view_model.dart';
 
 class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final currentTheme = Provider.of<ThemeContext>(context, listen: false);
+    final currentTheme =
+        Provider.of<ThemeContextViewModel>(context, listen: false);
 
     return Expanded(
       child: ListView(
@@ -13,40 +15,25 @@ class ProfileScreen extends StatelessWidget {
           SwitchListTile(
             title: Text("Light Theme",
                 style: Theme.of(context).textTheme.headline3),
-            value: currentTheme.isLight,
+            value: currentTheme.themeType == ThemeType.light ? true : false,
             onChanged: (newValue) {
-              currentTheme.isLight = newValue;
-              currentTheme.isDark = false;
-              newValue
-                  ? currentTheme.isSystem = false
-                  : currentTheme.isSystem = true;
-
-              currentTheme.switchTheme();
+              currentTheme.themeType = ThemeType.light;
             },
           ),
           SwitchListTile(
             title: Text("Dark Theme",
                 style: Theme.of(context).textTheme.headline3),
-            value: currentTheme.isDark,
+            value: currentTheme.themeType == ThemeType.dark ? true : false,
             onChanged: (newValue) {
-              currentTheme.isDark = newValue;
-              currentTheme.isLight = false;
-              newValue
-                  ? currentTheme.isSystem = false
-                  : currentTheme.isSystem = true;
-
-              currentTheme.switchTheme();
+              currentTheme.themeType = ThemeType.dark;
             },
           ),
           SwitchListTile(
             title: Text("System Default",
                 style: Theme.of(context).textTheme.headline3),
-            value: currentTheme.isSystem,
+            value: currentTheme.themeType == ThemeType.system ? true : false,
             onChanged: (newValue) {
-              currentTheme.isDark = false;
-              currentTheme.isLight = false;
-              currentTheme.isSystem = newValue;
-              currentTheme.switchTheme();
+              currentTheme.themeType = ThemeType.system;
             },
           ),
         ],

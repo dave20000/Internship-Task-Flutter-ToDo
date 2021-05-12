@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_app/route_config/application.dart';
-import 'package:todo_app/viewModels/tasks.dart';
+import 'package:todo_app/view_models/tasks_view_model.dart';
 import 'package:intl/intl.dart';
 
 class ToDoDetailScreen extends StatelessWidget {
@@ -27,7 +26,7 @@ class ToDoDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final task = Provider.of<Tasks>(context).getById(id);
+    final task = Provider.of<TasksViewModel>(context).getById(id);
     return Scaffold(
         body: ListView(
       children: [
@@ -79,8 +78,7 @@ class ToDoDetailScreen extends StatelessWidget {
                       style: Theme.of(context).textTheme.headline5)),
               GestureDetector(
                 onTap: () {
-                  Application.router
-                      .navigateTo(context, "/edit/${id.toString()}");
+                  Navigator.pushNamed(context, "/edit/${id.toString()}");
                 },
                 child: Text(
                   'Edit',

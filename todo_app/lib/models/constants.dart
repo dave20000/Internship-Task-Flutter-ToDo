@@ -1,12 +1,3 @@
-/*enum Categories {
-  Work,
-  Fun,
-  Sport,
-  Study,
-  Family,
-  Birth,
-}*/
-
 final List<String> categories = [
   'Work',
   'Fun',
@@ -15,5 +6,3 @@ final List<String> categories = [
   'Family',
   'Birth'
 ];
-
-enum todoMode { add, edit }

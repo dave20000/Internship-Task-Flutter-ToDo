@@ -1,16 +1,11 @@
-import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_app/route_config/application.dart';
-import 'package:todo_app/route_config/routes.dart';
-import 'package:todo_app/theme.dart';
-import 'package:todo_app/viewModels/theme_context.dart';
-import 'package:todo_app/viewModels/tasks.dart';
+import 'package:todo_app/services/router_service.dart';
+import 'package:todo_app/view_models/theme_context_view_model.dart';
+import 'package:todo_app/view_models/tasks_view_model.dart';
 
 void main() {
-  final router = FluroRouter();
-  Routes.configureRoutes(router);
-  Application.router = router;
+  RoutingService.configureRoutes();
   runApp(ToDoApp());
 }
 
@@ -20,22 +15,22 @@ class ToDoApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (ctx) => ThemeContext(),
+          create: (ctx) => ThemeContextViewModel(),
         ),
         ChangeNotifierProvider(
-          create: (ctx) => Tasks(),
+          create: (ctx) => TasksViewModel(),
         ),
       ],
-      child: Consumer<ThemeContext>(
+      child: Consumer<ThemeContextViewModel>(
         builder: (context, customTheme, child) {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
             title: 'ToDo App',
-            theme: lightThemeData(context),
-            darkTheme: darkThemeData(context),
+            theme: customTheme.lightThemeData(context),
+            darkTheme: customTheme.darkThemeData(context),
             themeMode: customTheme.currentTheme(),
             initialRoute: '/home',
-            onGenerateRoute: Application.router.generator,
+            onGenerateRoute: RoutingService.router.generator,
           );
         },
       ),

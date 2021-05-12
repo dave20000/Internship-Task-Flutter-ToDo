@@ -1,0 +1,1 @@
+enum TodoMode { add, edit }

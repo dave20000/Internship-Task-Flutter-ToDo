@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:todo_app/route_config/application.dart';
 
 class BottomTab extends StatelessWidget {
   final bool isHomeScreen;
@@ -38,17 +37,20 @@ class BottomTab extends StatelessWidget {
           ),
           GestureDetector(
             onTap: () {
-              Application.router.navigateTo(context, "/add");
+              Navigator.pushNamed(context, "/add");
             },
             child: PhysicalModel(
               color: Theme.of(context).accentColor,
               shadowColor: Theme.of(context).accentColor,
               shape: BoxShape.circle,
-              elevation: 4.0,
-              child: Icon(
-                Icons.add,
-                color: Colors.white,
-                size: 30,
+              elevation: 5.0,
+              child: Padding(
+                padding: EdgeInsets.all(4),
+                child: Icon(
+                  Icons.add,
+                  color: Colors.white,
+                  size: 25,
+                ),
               ),
             ),
           ),

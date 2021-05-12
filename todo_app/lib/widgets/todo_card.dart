@@ -2,7 +2,6 @@ import 'dart:math';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_app/models/task.dart';
-import 'package:todo_app/route_config/application.dart';
 
 class ToDoCard extends StatelessWidget {
   final Task task;
@@ -14,8 +13,7 @@ class ToDoCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Application.router
-            .navigateTo(context, "/home/${task.id}/${_color.value}");
+        Navigator.pushNamed(context, "/home/${task.id}/${_color.value}");
       },
       child: Container(
         padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
