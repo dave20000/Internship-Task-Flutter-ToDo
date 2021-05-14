@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:todo_app/enums/todo_mode.dart';
-import 'package:todo_app/models/constants.dart';
-import 'package:todo_app/models/task.dart';
+import 'package:todo_app/business_logic/enums/todo_mode.dart';
+import 'package:todo_app/business_logic/models/constants.dart';
+import 'package:todo_app/business_logic/models/task.dart';
 
 class FormViewModel with ChangeNotifier {
   int _selectedCateogryIndex;

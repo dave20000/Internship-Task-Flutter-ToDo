@@ -4,11 +4,12 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'dart:async';
 import 'package:path_provider/path_provider.dart';
-import 'package:todo_app/models/task.dart';
+import 'package:todo_app/business_logic/models/task.dart';
+import 'package:todo_app/services/database/database_service.dart';
 
-class ToDoDatabase {
-  ToDoDatabase._();
-  static final ToDoDatabase db = ToDoDatabase._();
+class DatabaseServiceImpl implements DatabaseService {
+  /*DatabaseServiceImpl._();
+  static final DatabaseServiceImpl db = DatabaseServiceImpl._();*/
 
   static Database _database;
 

@@ -1,7 +1,7 @@
 import 'dart:math';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
-import 'package:todo_app/models/task.dart';
+import 'package:todo_app/business_logic/models/task.dart';
 
 class ToDoCard extends StatelessWidget {
   final Task task;

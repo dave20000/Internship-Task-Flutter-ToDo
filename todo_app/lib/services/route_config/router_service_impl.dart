@@ -1,12 +1,18 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
-import 'package:todo_app/screens/home_screen.dart';
-import 'package:todo_app/screens/profile_screen.dart';
-import 'package:todo_app/screens/todo_tasks_screens/todo_details.dart';
-import 'package:todo_app/screens/todo_tasks_screens/todo_form.dart';
+import 'package:todo_app/services/route_config/router_service.dart';
+import 'package:todo_app/ui/screens/home_screen.dart';
+import 'package:todo_app/ui/screens/profile_screen.dart';
+import 'package:todo_app/ui/screens/todo_tasks_screens/todo_details.dart';
+import 'package:todo_app/ui/screens/todo_tasks_screens/todo_form.dart';
 
-class RoutingService {
-  static FluroRouter router = new FluroRouter();
+class RouterServiceImpl implements RouterService {
+  FluroRouter router;
+
+  RouterServiceImpl() {
+    router = new FluroRouter();
+    configureRoutes();
+  }
 
   static String homeRoute = "/home";
   static String toDoDetailRoute = "/home/:id/:colorValue";
@@ -55,7 +61,7 @@ class RoutingService {
     return HomeScreen();
   });
 
-  static void configureRoutes() {
+  void configureRoutes() {
     router.notFoundHandler = emptyHandler;
     router.define(homeRoute, handler: homeHandler);
     router.define(toDoDetailRoute,

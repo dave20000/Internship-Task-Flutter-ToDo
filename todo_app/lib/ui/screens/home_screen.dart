@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:todo_app/screens/profile_screen.dart';
-import 'package:todo_app/widgets/bottom_tab.dart';
-import 'package:todo_app/screens/todo_tasks_screens/todo_list.dart';
+import 'package:todo_app/ui/screens/profile_screen.dart';
+import 'package:todo_app/ui/screens/todo_tasks_screens/todo_list.dart';
+import 'package:todo_app/ui/widgets/bottom_tab.dart';
 
 class HomeScreen extends StatefulWidget {
   static List<Widget> _widgetOptions = <Widget>[ToDoList(), ProfileScreen()];
@@ -15,7 +15,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBodyBehindAppBar: true,
       body: Column(
         children: [
           const SizedBox(height: 40),

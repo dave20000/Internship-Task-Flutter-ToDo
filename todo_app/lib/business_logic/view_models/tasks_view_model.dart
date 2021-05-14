@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:todo_app/database/todo_database.dart';
-import 'package:todo_app/models/task.dart';
+import 'package:todo_app/services/database/database_service.dart';
+import 'package:todo_app/business_logic/models/task.dart';
+import 'package:todo_app/services/service_locator.dart';
 
 class TasksViewModel with ChangeNotifier {
+  final databaseService = ServiceLocator.resolve<DatabaseService>();
   List<Task> taskList = [];
 
   TasksViewModel() {
@@ -10,21 +12,21 @@ class TasksViewModel with ChangeNotifier {
   }
 
   Future<void> getTasks() async {
-    final tasks = await ToDoDatabase.db.getTasks();
+    final tasks = await databaseService.getTasks();
     taskList = tasks;
     notifyListeners();
   }
 
   void addTask(Task task) {
     task.id = taskList.length + 1;
-    ToDoDatabase.db.add(task).then((id) {
+    databaseService.add(task).then((id) {
       taskList.add(task);
       notifyListeners();
     });
   }
 
   void editTask(Task task) {
-    ToDoDatabase.db.update(task).then((id) {
+    databaseService.update(task).then((id) {
       taskList[taskList.indexWhere((element) => element.id == task.id)] = task;
       notifyListeners();
     });

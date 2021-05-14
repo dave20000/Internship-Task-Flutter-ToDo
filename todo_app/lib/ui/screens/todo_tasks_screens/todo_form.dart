@@ -4,13 +4,13 @@ import 'package:flutter/material.dart';
 
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_app/enums/todo_mode.dart';
 
-import 'package:todo_app/models/constants.dart';
-import 'package:todo_app/models/task.dart';
-import 'package:todo_app/view_models/tasks_view_model.dart';
-import 'package:todo_app/view_models/form_view_model.dart';
-import 'package:todo_app/widgets/date_selector.dart';
+import 'package:todo_app/business_logic/view_models/form_view_model.dart';
+import 'package:todo_app/business_logic/view_models/tasks_view_model.dart';
+import 'package:todo_app/business_logic/enums/todo_mode.dart';
+import 'package:todo_app/business_logic/models/constants.dart';
+import 'package:todo_app/business_logic/models/task.dart';
+import 'package:todo_app/ui/widgets/date_selector.dart';
 
 class AddEditToDoScreen extends StatefulWidget {
   final int id;

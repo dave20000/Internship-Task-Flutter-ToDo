@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_app/services/router_service.dart';
-import 'package:todo_app/view_models/theme_context_view_model.dart';
-import 'package:todo_app/view_models/tasks_view_model.dart';
+import 'package:todo_app/business_logic/view_models/tasks_view_model.dart';
+import 'package:todo_app/business_logic/view_models/theme_context_view_model.dart';
+import 'package:todo_app/services/route_config/router_service.dart';
+import 'package:todo_app/services/service_locator.dart';
 
 void main() {
-  RoutingService.configureRoutes();
+  ServiceLocator.setup();
   runApp(ToDoApp());
 }
 
@@ -30,7 +31,8 @@ class ToDoApp extends StatelessWidget {
             darkTheme: customTheme.darkThemeData(context),
             themeMode: customTheme.currentTheme(),
             initialRoute: '/home',
-            onGenerateRoute: RoutingService.router.generator,
+            onGenerateRoute:
+                ServiceLocator.resolve<RouterService>().router.generator,
           );
         },
       ),

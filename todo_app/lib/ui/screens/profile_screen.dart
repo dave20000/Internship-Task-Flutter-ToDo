@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_app/enums/theme_type.dart';
-import 'package:todo_app/view_models/theme_context_view_model.dart';
+import 'package:todo_app/business_logic/enums/theme_type.dart';
+import 'package:todo_app/business_logic/view_models/theme_context_view_model.dart';
 
 class ProfileScreen extends StatelessWidget {
   @override
@@ -9,7 +9,7 @@ class ProfileScreen extends StatelessWidget {
     final currentTheme =
         Provider.of<ThemeContextViewModel>(context, listen: false);
 
-    return Expanded(
+    return Flexible(
       child: ListView(
         children: [
           SwitchListTile(
@@ -17,7 +17,10 @@ class ProfileScreen extends StatelessWidget {
                 style: Theme.of(context).textTheme.headline3),
             value: currentTheme.themeType == ThemeType.light ? true : false,
             onChanged: (newValue) {
-              currentTheme.themeType = ThemeType.light;
+              if (newValue)
+                currentTheme.themeType = ThemeType.light;
+              else
+                currentTheme.themeType = ThemeType.system;
             },
           ),
           SwitchListTile(
@@ -25,7 +28,10 @@ class ProfileScreen extends StatelessWidget {
                 style: Theme.of(context).textTheme.headline3),
             value: currentTheme.themeType == ThemeType.dark ? true : false,
             onChanged: (newValue) {
-              currentTheme.themeType = ThemeType.dark;
+              if (newValue)
+                currentTheme.themeType = ThemeType.dark;
+              else
+                currentTheme.themeType = ThemeType.system;
             },
           ),
           SwitchListTile(

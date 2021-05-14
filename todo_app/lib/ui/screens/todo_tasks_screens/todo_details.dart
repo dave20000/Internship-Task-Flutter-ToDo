@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_app/view_models/tasks_view_model.dart';
 import 'package:intl/intl.dart';
+import 'package:todo_app/business_logic/view_models/tasks_view_model.dart';
 
 class ToDoDetailScreen extends StatelessWidget {
   final int id;
