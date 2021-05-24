@@ -50,7 +50,7 @@ class FormViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  set selectedEventIndex(int value) {
+  set selectedCateogryIndex(int value) {
     this._selectedCateogryIndex = value;
     notifyListeners();
   }

@@ -160,7 +160,7 @@ class _AddEditToDoScreenState extends State<AddEditToDoScreen> {
                               ),
                           },
                           onValueChanged: (int val) {
-                            formValue.selectedEventIndex = val;
+                            formValue.selectedCateogryIndex = val;
                             formValue.updateCategory(categories[val]);
                           },
                           groupValue: formValue.selectedCateogryIndex,
