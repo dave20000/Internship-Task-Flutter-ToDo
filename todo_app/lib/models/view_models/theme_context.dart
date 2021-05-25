@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:todo_app/business_logic/enums/theme_type.dart';
+import 'package:todo_app/models/enums/theme_type.dart';
 
 class ThemeContextViewModel with ChangeNotifier {
   SharedPreferences _pref;

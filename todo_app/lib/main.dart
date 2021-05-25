@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_app/business_logic/view_models/tasks_view_model.dart';
-import 'package:todo_app/business_logic/view_models/theme_context_view_model.dart';
-import 'package:todo_app/services/route_config/router_service.dart';
+import 'package:todo_app/models/view_models/tasks.dart';
+import 'package:todo_app/models/view_models/theme_context.dart';
+import 'package:todo_app/services/app_bootsraper.dart';
+import 'package:todo_app/services/app_router.dart';
 import 'package:todo_app/services/service_locator.dart';
 
 void main() {
-  ServiceLocator.setup();
+  AppBootStrapper.initialize();
   runApp(ToDoApp());
 }
 
@@ -16,10 +17,10 @@ class ToDoApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (ctx) => ThemeContextViewModel(),
+          create: (ctx) => ServiceLocator.resolve<ThemeContextViewModel>(),
         ),
         ChangeNotifierProvider(
-          create: (ctx) => TasksViewModel(),
+          create: (ctx) => ServiceLocator.resolve<TasksViewModel>(),
         ),
       ],
       child: Consumer<ThemeContextViewModel>(
@@ -31,8 +32,7 @@ class ToDoApp extends StatelessWidget {
             darkTheme: customTheme.darkThemeData(context),
             themeMode: customTheme.currentTheme(),
             initialRoute: '/home',
-            onGenerateRoute:
-                ServiceLocator.resolve<RouterService>().router.generator,
+            onGenerateRoute: AppRouter.routeFactory,
           );
         },
       ),

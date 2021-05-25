@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:todo_app/business_logic/enums/todo_mode.dart';
-import 'package:todo_app/business_logic/models/constants.dart';
-import 'package:todo_app/business_logic/models/task.dart';
+import 'package:todo_app/models/enums/todo_mode.dart';
+import 'package:todo_app/models/task.dart';
 
 class FormViewModel with ChangeNotifier {
   int _selectedCateogryIndex;
@@ -13,7 +12,7 @@ class FormViewModel with ChangeNotifier {
     if (loadedTask != null) {
       _mode = TodoMode.edit;
       _task = loadedTask;
-      _selectedCateogryIndex = categories.indexOf(_task.category);
+      _selectedCateogryIndex = _task.categoryToEnum().index;
     } else {
       _mode = TodoMode.add;
       _task = new Task();

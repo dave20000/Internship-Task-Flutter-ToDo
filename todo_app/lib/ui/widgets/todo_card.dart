@@ -1,19 +1,16 @@
-import 'dart:math';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
-import 'package:todo_app/business_logic/models/task.dart';
+import 'package:todo_app/models/task.dart';
 
 class ToDoCard extends StatelessWidget {
   final Task task;
   ToDoCard({this.task});
 
-  final _color = Colors.primaries[Random().nextInt(Colors.primaries.length)];
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, "/home/${task.id}/${_color.value}");
+        Navigator.pushNamed(context, "/home/${task.id.toString()}");
       },
       child: Container(
         padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
@@ -26,7 +23,7 @@ class ToDoCard extends StatelessWidget {
                 borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(16.0),
                     bottomLeft: Radius.circular(16.0)),
-                color: _color,
+                color: task.categoryColor(),
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -55,8 +52,8 @@ class ToDoCard extends StatelessWidget {
                     ),
                     Container(
                         padding: const EdgeInsets.all(2.0),
-                        decoration:
-                            BoxDecoration(border: Border.all(color: _color)),
+                        decoration: BoxDecoration(
+                            border: Border.all(color: task.categoryColor())),
                         child: Text(task.category ?? "default category",
                             style:
                                 TextStyle(fontSize: 12, color: Colors.grey))),

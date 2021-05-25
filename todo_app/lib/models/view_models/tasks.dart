@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:todo_app/services/database/database_service.dart';
-import 'package:todo_app/business_logic/models/task.dart';
+import 'package:todo_app/models/task.dart';
+import 'package:todo_app/services/database/database_contract.dart';
 import 'package:todo_app/services/service_locator.dart';
 
 class TasksViewModel with ChangeNotifier {
-  final databaseService = ServiceLocator.resolve<DatabaseService>();
+  final databaseService = ServiceLocator.resolve<DatabaseContract>();
   List<Task> taskList = [];
 
   TasksViewModel() {

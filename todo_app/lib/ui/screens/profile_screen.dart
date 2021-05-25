@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_app/business_logic/enums/theme_type.dart';
-import 'package:todo_app/business_logic/view_models/theme_context_view_model.dart';
+import 'package:todo_app/models/enums/theme_type.dart';
+import 'package:todo_app/models/view_models/theme_context.dart';
 
 class ProfileScreen extends StatelessWidget {
   @override

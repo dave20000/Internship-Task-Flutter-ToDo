@@ -4,13 +4,10 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'dart:async';
 import 'package:path_provider/path_provider.dart';
-import 'package:todo_app/business_logic/models/task.dart';
-import 'package:todo_app/services/database/database_service.dart';
+import 'package:todo_app/models/task.dart';
+import 'package:todo_app/services/database/database_contract.dart';
 
-class DatabaseServiceImpl implements DatabaseService {
-  /*DatabaseServiceImpl._();
-  static final DatabaseServiceImpl db = DatabaseServiceImpl._();*/
-
+class DatabaseProvider implements DatabaseContract {
   static Database _database;
 
   Future<Database> get database async {
