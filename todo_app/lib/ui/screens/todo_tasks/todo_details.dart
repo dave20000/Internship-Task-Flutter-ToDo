@@ -20,46 +20,42 @@ class ToDoDetailScreen extends StatelessWidget {
           Container(
             padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
             color: task.categoryColor(),
-            child: Stack(
+            child: Column(
               children: [
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: IconButton(
-                    icon: Icon(
-                      Icons.arrow_back_ios_outlined,
-                      color: Colors.white,
+                Stack(
+                  children: [
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: IconButton(
+                        icon: Icon(
+                          Icons.arrow_back_ios_outlined,
+                          color: Colors.white,
+                        ),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                      ),
                     ),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                  ),
+                    Align(
+                      alignment: Alignment.center,
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Text(task.category,
+                            style: Theme.of(context).textTheme.headline1),
+                      ),
+                    ),
+                  ],
                 ),
-                Align(
-                  alignment: Alignment.center,
-                  child: Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Text(task.category,
-                        style: Theme.of(context).textTheme.headline1),
+                Container(
+                  height: MediaQuery.of(context).size.height / 3.0,
+                  child: SvgPicture.asset(
+                    "assets/${task.category.toLowerCase()}.svg",
+                    placeholderBuilder: (BuildContext context) => Container(
+                        child: Center(child: CircularProgressIndicator())),
                   ),
                 ),
               ],
             ),
-          ),
-          /*
-          SvgPicture.asset(
-            //"assets/${task.category.toLowerCase()}.png",
-            "assets/fun.png",
-            color: task.categoryColor(),
-            height: MediaQuery.of(context).size.height / 3.0,
-            placeholderBuilder: (BuildContext context) =>
-                Container(child: const CircularProgressIndicator()),
-          ),
-          */
-          Container(
-            height: MediaQuery.of(context).size.height / 3.0,
-            color: task.categoryColor(),
-            child: Image(
-                image: AssetImage("assets/${task.category.toLowerCase()}.png")),
           ),
           Padding(
             padding: const EdgeInsets.only(
