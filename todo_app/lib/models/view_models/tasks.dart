@@ -1,38 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:todo_app/models/task.dart';
 import 'package:todo_app/services/database/database_contract.dart';
-import 'package:todo_app/services/service_locator.dart';
 
 class TasksViewModel with ChangeNotifier {
-  final databaseService = ServiceLocator.resolve<DatabaseContract>();
-  List<Task> taskList = [];
+  final DatabaseContract _databaseContract;
+  Future<List<Task>> _taskList;
+  Future<List<Task>> get taskList => _taskList;
 
-  TasksViewModel() {
-    getTasks();
+  TasksViewModel(this._databaseContract);
+
+  Future<void> fetchTasks() async {
+    _taskList = _databaseContract.getTasks();
   }
 
-  Future<void> getTasks() async {
-    final tasks = await databaseService.getTasks();
-    taskList = tasks;
+  Future<void> refreshTasks() async {
+    _taskList = _databaseContract.getTasks();
     notifyListeners();
+    await _taskList;
   }
 
-  void addTask(Task task) {
-    task.id = taskList.length + 1;
-    databaseService.add(task).then((id) {
-      taskList.add(task);
-      notifyListeners();
-    });
+  /*Task getById(int id) {
+    return _taskList.firstWhere((task) => task.id == id);
+  }*/
+  /*
+  Future<void> addTask(Task task) async {
+    await _databaseContract.add(task);
   }
 
-  void editTask(Task task) {
-    databaseService.update(task).then((id) {
-      taskList[taskList.indexWhere((element) => element.id == task.id)] = task;
-      notifyListeners();
-    });
+  Future<void> editTask(Task task) async {
+    await _databaseContract.update(task);
   }
-
-  Task getById(int id) {
-    return taskList.firstWhere((task) => task.id == id);
-  }
+  */
 }

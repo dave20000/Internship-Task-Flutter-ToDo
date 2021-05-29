@@ -4,13 +4,16 @@ import 'package:todo_app/models/task.dart';
 
 class ToDoCard extends StatelessWidget {
   final Task task;
-  ToDoCard({this.task});
+  final Function(bool) isEdited;
+  ToDoCard({this.task, this.isEdited});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        Navigator.pushNamed(context, "/home/${task.id.toString()}");
+      onTap: () async {
+        var isEdit =
+            await Navigator.pushNamed(context, "/home/${task.id.toString()}");
+        isEdited(isEdit as bool);
       },
       child: Container(
         padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
@@ -53,7 +56,8 @@ class ToDoCard extends StatelessWidget {
                     Container(
                         padding: const EdgeInsets.all(2.0),
                         decoration: BoxDecoration(
-                            border: Border.all(color: task.categoryColor())),
+                          border: Border.all(color: task.categoryColor()),
+                        ),
                         child: Text(task.category ?? "default category",
                             style:
                                 TextStyle(fontSize: 12, color: Colors.grey))),

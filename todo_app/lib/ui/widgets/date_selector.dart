@@ -34,6 +34,7 @@ class DateSelector extends StatelessWidget {
             DateFormat.E(locale).format(date)[0],
       ),
       calendarStyle: CalendarStyle(
+        rangeHighlightColor: Theme.of(context).accentColor,
         defaultDecoration: BoxDecoration(
           shape: BoxShape.rectangle,
         ),
@@ -55,9 +56,6 @@ class DateSelector extends StatelessWidget {
           color: Theme.of(context).accentColor,
         ),
         rangeEndDecoration: BoxDecoration(
-          color: Theme.of(context).accentColor,
-        ),
-        withinRangeDecoration: BoxDecoration(
           color: Theme.of(context).accentColor,
         ),
         cellMargin: EdgeInsets.all(0),

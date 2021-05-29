@@ -32,11 +32,11 @@ class DatabaseProvider implements DatabaseContract {
   Future<List<Task>> getTasks() async {
     try {
       var dbClient = await database;
-      List<Map> maps = await dbClient.query('tasks');
+      List<Map> jsonTasks = await dbClient.query('tasks');
       List<Task> tasks = [];
-      if (maps.length > 0) {
-        for (int i = 0; i < maps.length; i++) {
-          tasks.add(Task.fromMap(maps[i]));
+      if (jsonTasks.length > 0) {
+        for (int i = 0; i < jsonTasks.length; i++) {
+          tasks.add(Task.fromJson(jsonTasks[i]));
         }
       }
       return tasks;
@@ -49,7 +49,7 @@ class DatabaseProvider implements DatabaseContract {
   Future<int> add(Task task) async {
     try {
       var dbClient = await database;
-      return await dbClient.insert('tasks', task.toMap());
+      return await dbClient.insert('tasks', task.toJson());
     } catch (e) {
       close();
       throw Exception(e.toString());
@@ -61,10 +61,32 @@ class DatabaseProvider implements DatabaseContract {
       var dbClient = await database;
       return await dbClient.update(
         'tasks',
-        task.toMap(),
+        task.toJson(),
         where: 'id = ?',
         whereArgs: [task.id],
       );
+    } catch (e) {
+      close();
+      throw Exception(e.toString());
+    }
+  }
+
+  Future<Task> getTaskById(int id) async {
+    try {
+      final db = await database;
+      var taskJson = await db.query("tasks", where: "id = ?", whereArgs: [id]);
+      return taskJson.isNotEmpty ? Task.fromJson(taskJson.first) : null;
+    } catch (e) {
+      close();
+      throw Exception(e.toString());
+    }
+  }
+
+  Future<int> deleteTask(int id) async {
+    try {
+      final db = await database;
+      int count = await db.delete("tasks", where: 'id = ?', whereArgs: [id]);
+      return count;
     } catch (e) {
       close();
       throw Exception(e.toString());

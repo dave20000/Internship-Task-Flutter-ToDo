@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 class BottomTab extends StatelessWidget {
   final bool isHomeScreen;
   final Function(int) tabPressed;
-  BottomTab({this.isHomeScreen, this.tabPressed});
+  final Function(bool) taskAdded;
+  BottomTab({this.isHomeScreen, this.tabPressed, this.taskAdded});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -36,8 +37,9 @@ class BottomTab extends StatelessWidget {
             ),
           ),
           GestureDetector(
-            onTap: () {
-              Navigator.pushNamed(context, "/add");
+            onTap: () async {
+              var t = await Navigator.pushNamed(context, "/add");
+              taskAdded(t as bool);
             },
             child: PhysicalModel(
               color: Theme.of(context).accentColor,

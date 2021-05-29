@@ -1,15 +1,11 @@
 import 'package:intl/intl.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:provider/provider.dart';
 import 'package:todo_app/models/enums/categories.dart';
-import 'package:todo_app/models/enums/todo_mode.dart';
+import 'package:todo_app/models/view_models/task.dart';
 import 'package:todo_app/models/task.dart';
-import 'package:todo_app/models/view_models/form.dart';
-import 'package:todo_app/models/view_models/tasks.dart';
-
+import 'package:todo_app/ui/widgets/base_widget.dart';
 import 'package:todo_app/ui/widgets/date_selector.dart';
 
 class ToDoFormScreen extends StatefulWidget {
@@ -40,39 +36,40 @@ class _ToDoFormScreenState extends State<ToDoFormScreen> {
     super.dispose();
   }
 
-  void controllerValues(String title, String details) {
-    titleController.text = title;
-    detailsController.text = details;
-  }
-
-  showToast(String message) {
+  showToast(String message, Color color) {
     Fluttertoast.showToast(
       msg: message,
       toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.TOP,
       timeInSecForIosWeb: 1,
-      backgroundColor: Theme.of(context).accentColor,
-      textColor: Colors.black,
+      backgroundColor: color,
+      textColor: Colors.white,
       fontSize: 16.0,
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    final taskProvider = Provider.of<TasksViewModel>(context, listen: false);
-    final Task loadedTask =
-        widget.id != null ? taskProvider.getById(widget.id) : null;
-
-    if (loadedTask != null)
-      controllerValues(loadedTask.title, loadedTask.details);
-
-    return ChangeNotifierProvider<FormViewModel>(
-      create: (ctx) => FormViewModel(loadedTask),
-      child: SafeArea(
-        child: Scaffold(
-          body: Consumer<FormViewModel>(
-            builder: (context, formValue, child) {
-              return Container(
+    return BaseWidget<TaskViewModel>(
+      onModelReady: (model) async {
+        model.isCalendarView = true;
+        if (widget.id != null) {
+          model.isAdd = false;
+          await model.getById(widget.id);
+          model.selectedCateogryIndex = model.task.categoryToEnum().index;
+        } else {
+          model.isAdd = true;
+          model.task = new Task();
+          model.selectedCateogryIndex = 0;
+          model.task.category = Categories.Work.categoryValue();
+        }
+        titleController.text = model.task.title;
+        detailsController.text = model.task.details;
+      },
+      builder: (context, taskModel, child) {
+        if (taskModel.task != null) {
+          return SafeArea(
+            child: Scaffold(
+              body: Container(
                 height: MediaQuery.of(context).size.height,
                 child: Column(
                   children: [
@@ -82,60 +79,64 @@ class _ToDoFormScreenState extends State<ToDoFormScreen> {
                           Stack(
                             children: [
                               AnimatedSwitcher(
-                                duration: Duration(seconds: 1),
-                                child: formValue.isCalendarView
+                                transitionBuilder: (child, animation) =>
+                                    ScaleTransition(
+                                  scale: animation,
+                                  child: child,
+                                ),
+                                duration: Duration(milliseconds: 500),
+                                child: taskModel.isCalendarView
                                     ? DateSelector(
-                                        startDate: formValue.task.taskDate,
-                                        endDate: formValue.task.endDate,
+                                        startDate: taskModel.task.taskDate,
+                                        endDate: taskModel.task.endDate,
                                         getDates: (start, end) {
-                                          formValue.updateDate(start, end);
+                                          taskModel.updateDate(start, end);
                                         },
                                       )
                                     : GestureDetector(
                                         onTap: () {
-                                          formValue.changeCalendarView();
+                                          taskModel.changeCalendarView();
                                         },
                                         child: Container(
-                                            padding: EdgeInsets.fromLTRB(
-                                                0, 10, 0, 10),
-                                            child: Center(
-                                              child: Column(
-                                                children: [
-                                                  Text(
-                                                      DateFormat('yyyy')
-                                                              .format(formValue
-                                                                  .task
-                                                                  .taskDate)
-                                                              .toString() +
-                                                          " " +
-                                                          DateFormat('MMM')
-                                                              .format(formValue
-                                                                  .task
-                                                                  .taskDate)
-                                                              .toString(),
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .headline5),
-                                                  Text(
+                                          padding:
+                                              EdgeInsets.fromLTRB(0, 10, 0, 10),
+                                          child: Center(
+                                            child: Column(
+                                              children: [
+                                                Text(
+                                                  DateFormat('yyyy')
+                                                          .format(taskModel
+                                                              .task.taskDate)
+                                                          .toString() +
+                                                      " " +
+                                                      DateFormat('MMM')
+                                                          .format(taskModel
+                                                              .task.taskDate)
+                                                          .toString(),
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .headline5,
+                                                ),
+                                                Text(
+                                                  DateFormat('dd')
+                                                          .format(taskModel
+                                                              .task.taskDate)
+                                                          .toString() +
+                                                      " - " +
                                                       DateFormat('dd')
-                                                              .format(formValue
-                                                                  .task
+                                                          .format(taskModel.task
+                                                                  .endDate ??
+                                                              taskModel.task
                                                                   .taskDate)
-                                                              .toString() +
-                                                          " - " +
-                                                          DateFormat('dd')
-                                                              .format(formValue
-                                                                      .task
-                                                                      .endDate ??
-                                                                  formValue.task
-                                                                      .taskDate)
-                                                              .toString(),
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .headline2),
-                                                ],
-                                              ),
-                                            )),
+                                                          .toString(),
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .headline3,
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
                                       ),
                               ),
                               Align(
@@ -164,11 +165,11 @@ class _ToDoFormScreenState extends State<ToDoFormScreen> {
                                 ),
                             },
                             onValueChanged: (int val) {
-                              formValue.selectedCateogryIndex = val;
-                              formValue.updateCategory(
+                              taskModel.selectedCateogryIndex = val;
+                              taskModel.updateCategory(
                                   Categories.values[val].categoryValue());
                             },
-                            groupValue: formValue.selectedCateogryIndex,
+                            groupValue: taskModel.selectedCateogryIndex,
                             selectedColor: Theme.of(context).accentColor,
                             borderColor: Theme.of(context).accentColor,
                             pressedColor: Theme.of(context).accentColor,
@@ -231,41 +232,58 @@ class _ToDoFormScreenState extends State<ToDoFormScreen> {
                           child: MaterialButton(
                             child: Text('Save',
                                 style: Theme.of(context).textTheme.button),
-                            onPressed: () {
-                              if (formValue.task.taskDate != null) {
-                                if (formValue.isCalendarView)
-                                  formValue.changeCalendarView();
-                                if (_formKey.currentState.validate()) {
-                                  formValue.updateTitleAndDetailS(
-                                    titleController.text,
-                                    detailsController.text,
-                                  );
-                                  if (formValue.mode == TodoMode.add) {
-                                    taskProvider.addTask(formValue.task);
-                                    showToast("New task added succesfully");
-                                  } else {
-                                    taskProvider.editTask(formValue.task);
-                                    showToast("Edit task succesfully");
+                            onPressed: () async {
+                              if (taskModel.task.taskDate != null) {
+                                if (taskModel.isCalendarView)
+                                  taskModel.changeCalendarView();
+                                if (titleController.text.isNotEmpty ||
+                                    detailsController.text.isNotEmpty) {
+                                  if (_formKey.currentState.validate()) {
+                                    taskModel.updateTitleAndDetailS(
+                                      titleController.text,
+                                      detailsController.text,
+                                    );
+
+                                    if (taskModel.isAdd) {
+                                      await taskModel.addTask();
+                                      showToast(
+                                        "New task added succesfully",
+                                        Colors.greenAccent,
+                                      );
+                                    } else {
+                                      await taskModel.editTask();
+                                      showToast(
+                                        "Edit task succesfully",
+                                        Colors.greenAccent,
+                                      );
+                                    }
+                                    _formKey.currentState.reset();
+                                    Navigator.pop(context, true);
                                   }
-                                  _formKey.currentState.reset();
-                                  Navigator.pop(context);
                                 }
                               } else {
-                                showToast("Please select a date");
+                                showToast(
+                                  "Please select a date",
+                                  Colors.red,
+                                );
                               }
                             },
                             color: Theme.of(context).accentColor,
                           ),
                         ),
                       ),
-                    )
+                    ),
                   ],
                 ),
-              );
-            },
-          ),
-        ),
-      ),
+              ),
+            ),
+          );
+        } else {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+      },
     );
   }
 }

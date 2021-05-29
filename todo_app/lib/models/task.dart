@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:json_annotation/json_annotation.dart';
 import 'package:todo_app/models/enums/categories.dart';
 
+part 'task.g.dart';
+
+@JsonSerializable()
 class Task {
   int id;
   String title;
@@ -18,30 +22,13 @@ class Task {
     this.category,
   });
 
-  Map<String, dynamic> toMap() {
-    var map = <String, dynamic>{
-      'id': id,
-      'title': title,
-      'details': details,
-      'taskDate': taskDate.toIso8601String(),
-      'endDate': endDate.toIso8601String() ?? taskDate.toIso8601String(),
-      'category': category
-    };
-    return map;
-  }
-
-  Task.fromMap(Map<String, dynamic> map) {
-    id = map['id'];
-    title = map['title'];
-    details = map['details'];
-    taskDate = DateTime.parse(map['taskDate']);
-    endDate = DateTime.parse(map['endDate']);
-    category = map['category'];
-  }
+  factory Task.fromJson(Map<String, dynamic> json) => _$TaskFromJson(json);
+  Map<String, dynamic> toJson() => _$TaskToJson(this);
 }
 
 extension TaskExtension on Task {
   Color categoryColor() {
+    //return Colors.primaries[Random().nextInt(Colors.primaries.length)];
     var x = this.categoryToEnum();
     var color;
     switch (x) {
