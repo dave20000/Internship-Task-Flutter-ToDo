@@ -6,7 +6,7 @@ import 'package:todo_app/ui/screens/todo_tasks/todo_details.dart';
 import 'package:todo_app/ui/screens/todo_tasks/todo_form.dart';
 
 class AppRouter {
-  static FluroRouter _router;
+  static FluroRouter _router = FluroRouter();
 
   static RouteFactory get routeFactory => (routeSettings) {
         return _router.generator(routeSettings);
@@ -15,13 +15,12 @@ class AppRouter {
   AppRouter();
 
   static configureRoutes() {
-    _router = new FluroRouter();
     _router.notFoundHandler = new Handler(
-      handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+      handlerFunc: (BuildContext? context, Map<String, List<String>> params) {
         return Scaffold(
           body: Center(
             child: Text(
-              "Page not avaialble",
+              "Page not available",
               style: TextStyle(color: Colors.yellowAccent[700]),
             ),
           ),
@@ -47,7 +46,7 @@ class AppRouter {
     _router.define(
       "/add",
       handler: new Handler(handlerFunc: (context, Map<String, dynamic> params) {
-        return ToDoFormScreen();
+        return ToDoFormScreen(id: null);
       }),
       transitionType: TransitionType.inFromBottom,
     );

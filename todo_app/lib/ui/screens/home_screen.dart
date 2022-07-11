@@ -19,13 +19,15 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     ToDoList(),
     ProfileScreen(),
   ];
-  AnimationController _animationController;
+  late AnimationController _animationController;
 
   @override
   void initState() {
     super.initState();
-    _animationController =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 450));
+    _animationController = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 450),
+    );
   }
 
   @override
@@ -86,17 +88,17 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               transitionType: ContainerTransitionType.fade,
               openBuilder:
                   (context, void Function({bool returnValue}) closedContainer) {
-                return ToDoFormScreen();
+                return ToDoFormScreen(id: null);
               },
               onClosed: (success) {
-                if (success != null && success) {
+                if (success != null && success as bool) {
                   tasksModel.refreshTasks();
                 }
               },
               useRootNavigator: true,
               closedElevation: 6.0,
               closedShape: CircleBorder(),
-              closedColor: Theme.of(context).accentColor,
+              closedColor: Theme.of(context).colorScheme.secondary,
               closedBuilder: (context, openContainer) {
                 return InkWell(
                   customBorder: CircleBorder(),

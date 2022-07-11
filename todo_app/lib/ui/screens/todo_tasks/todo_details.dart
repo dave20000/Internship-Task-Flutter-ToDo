@@ -7,7 +7,7 @@ import 'package:todo_app/ui/widgets/base_widget.dart';
 
 class ToDoDetailScreen extends StatelessWidget {
   final int id;
-  ToDoDetailScreen({this.id});
+  ToDoDetailScreen({required this.id});
   @override
   Widget build(BuildContext context) {
     return BaseWidget<TaskDetailViewModel>(
@@ -31,7 +31,7 @@ class ToDoDetailScreen extends StatelessWidget {
                   children: [
                     Container(
                       padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-                      color: taskDetailViewModel.task.categoryColor(),
+                      color: taskDetailViewModel.task!.categoryColor(),
                       child: Column(
                         children: [
                           Stack(
@@ -57,7 +57,7 @@ class ToDoDetailScreen extends StatelessWidget {
                                 child: Padding(
                                   padding: const EdgeInsets.all(10.0),
                                   child: Text(
-                                    taskDetailViewModel.task.category,
+                                    taskDetailViewModel.task!.category!,
                                     style:
                                         Theme.of(context).textTheme.headline1,
                                   ),
@@ -103,7 +103,7 @@ class ToDoDetailScreen extends StatelessWidget {
                           Container(
                             height: MediaQuery.of(context).size.height / 3.0,
                             child: SvgPicture.asset(
-                              "assets/${taskDetailViewModel.task.category.toLowerCase()}.svg",
+                              "assets/${taskDetailViewModel.task!.category!.toLowerCase()}.svg",
                               placeholderBuilder: (BuildContext context) =>
                                   Container(
                                 child: Center(
@@ -127,18 +127,18 @@ class ToDoDetailScreen extends StatelessWidget {
                         children: [
                           Expanded(
                             child: Text(
-                              taskDetailViewModel.task.title,
+                              taskDetailViewModel.task!.title!,
                               style: Theme.of(context).textTheme.headline5,
                             ),
                           ),
                           GestureDetector(
                             onTap: () async {
                               var isEdited = await Navigator.pushNamed(context,
-                                      "/edit/${taskDetailViewModel.task.id.toString()}")
-                                  as bool;
+                                      "/edit/${taskDetailViewModel.task!.id.toString()}")
+                                  as bool?;
                               if (isEdited != null && isEdited) {
                                 taskDetailViewModel
-                                    .fetchTask(taskDetailViewModel.task.id);
+                                    .fetchTask(taskDetailViewModel.task!.id!);
                                 taskDetailViewModel.isEdited = true;
                               }
                             },
@@ -147,7 +147,8 @@ class ToDoDetailScreen extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
-                                color: taskDetailViewModel.task.categoryColor(),
+                                color:
+                                    taskDetailViewModel.task!.categoryColor(),
                               ),
                             ),
                           )
@@ -161,10 +162,10 @@ class ToDoDetailScreen extends StatelessWidget {
                         right: 24.0,
                       ),
                       child: Text(
-                        taskDetailViewModel.task.taskDate.day.toString() +
+                        taskDetailViewModel.task!.taskDate!.day.toString() +
                             " " +
                             DateFormat('MMM')
-                                .format(taskDetailViewModel.task.taskDate),
+                                .format(taskDetailViewModel.task!.taskDate!),
                         style: Theme.of(context).textTheme.headline3,
                       ),
                     ),
@@ -175,7 +176,7 @@ class ToDoDetailScreen extends StatelessWidget {
                         right: 24.0,
                       ),
                       child: Text(
-                        taskDetailViewModel.task.details,
+                        taskDetailViewModel.task!.details!,
                         style: TextStyle(fontSize: 15, color: Colors.grey),
                       ),
                     ),

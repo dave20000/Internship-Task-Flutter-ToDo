@@ -3,9 +3,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todo_app/models/enums/theme_type.dart';
 
 class ThemeContextViewModel with ChangeNotifier {
-  SharedPreferences _pref;
+  SharedPreferences? _pref;
   final String key = "Theme";
-  ThemeType _themeType;
+  ThemeType _themeType = ThemeType.system;
 
   _initThemePrefs() async {
     if (_pref == null) _pref = await SharedPreferences.getInstance();
@@ -14,15 +14,14 @@ class ThemeContextViewModel with ChangeNotifier {
   _loadThemeTypeFromPrefes() async {
     await _initThemePrefs();
     _themeType = ThemeType.values.firstWhere(
-            (tt) => tt.toString() == _pref.getString(key),
-            orElse: () => null) ??
-        ThemeType.system;
+        (tt) => tt.toString() == _pref!.getString(key),
+        orElse: () => ThemeType.system);
     notifyListeners();
   }
 
   _saveThemeTypeToPrefs() async {
     await _initThemePrefs();
-    _pref.setString(key, _themeType.toString());
+    _pref!.setString(key, _themeType.toString());
   }
 
   ThemeContextViewModel() {
@@ -57,7 +56,6 @@ class ThemeContextViewModel with ChangeNotifier {
 
   ThemeData lightThemeData(BuildContext context) {
     return ThemeData.light().copyWith(
-      accentColor: Color.fromRGBO(255, 218, 2, 1),
       visualDensity: VisualDensity.adaptivePlatformDensity,
       backgroundColor: Colors.white,
       iconTheme: IconThemeData(color: Colors.black),
@@ -86,12 +84,13 @@ class ThemeContextViewModel with ChangeNotifier {
             fontSize: 16.0, fontWeight: FontWeight.bold, color: Colors.black),
         subtitle1: TextStyle(fontSize: 12.0, color: Colors.black),
       ),
+      colorScheme: ColorScheme.fromSwatch()
+          .copyWith(secondary: Color.fromRGBO(255, 218, 2, 1)),
     );
   }
 
   ThemeData darkThemeData(BuildContext context) {
     return ThemeData.dark().copyWith(
-      accentColor: Color.fromRGBO(255, 218, 2, 1),
       visualDensity: VisualDensity.adaptivePlatformDensity,
       backgroundColor: Colors.black,
       inputDecorationTheme: InputDecorationTheme(
@@ -120,6 +119,8 @@ class ThemeContextViewModel with ChangeNotifier {
             fontSize: 16.0, fontWeight: FontWeight.bold, color: Colors.black),
         subtitle1: TextStyle(fontSize: 12.0, color: Colors.white),
       ),
+      colorScheme: ColorScheme.fromSwatch()
+          .copyWith(secondary: Color.fromRGBO(255, 218, 2, 1)),
     );
   }
 }

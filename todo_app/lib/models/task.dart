@@ -6,12 +6,12 @@ part 'task.g.dart';
 
 @JsonSerializable()
 class Task {
-  int id;
-  String title;
-  String details;
-  DateTime taskDate;
-  DateTime endDate;
-  String category;
+  int? id;
+  String? title;
+  String? details;
+  DateTime? taskDate;
+  DateTime? endDate;
+  String? category;
 
   Task({
     this.id,
@@ -55,27 +55,21 @@ extension TaskExtension on Task {
   }
 
   Categories categoryToEnum() {
-    Categories val;
     switch (this.category) {
       case "Work":
-        val = Categories.Work;
-        break;
+        return Categories.Work;
       case "Fun":
-        val = Categories.Fun;
-        break;
+        return Categories.Fun;
       case "Family":
-        val = Categories.Family;
-        break;
+        return Categories.Family;
       case "Sport":
-        val = Categories.Sport;
-        break;
+        return Categories.Sport;
       case "Study":
-        val = Categories.Study;
-        break;
+        return Categories.Study;
       case "Birth":
-        val = Categories.Birth;
-        break;
+        return Categories.Birth;
+      default:
+        return Categories.Fun;
     }
-    return val;
   }
 }

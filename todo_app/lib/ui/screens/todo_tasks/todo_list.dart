@@ -25,7 +25,7 @@ class ToDoList extends StatelessWidget {
               future: tasksModel.taskList,
               builder: (BuildContext ctx, AsyncSnapshot<List<Task>> snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
-                  final List<Task> tasks = snapshot?.data ?? <Task>[];
+                  final List<Task> tasks = snapshot.data ?? <Task>[];
                   if (tasks.isEmpty) {
                     return Center(
                       child: Text(
@@ -47,7 +47,7 @@ class ToDoList extends StatelessWidget {
                           );
                         },
                         onClosed: (success) {
-                          if (success != null && success) {
+                          if (success != null && success as bool) {
                             tasksModel.refreshTasks();
                           }
                         },

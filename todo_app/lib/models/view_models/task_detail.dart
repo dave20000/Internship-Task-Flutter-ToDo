@@ -1,11 +1,11 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/widgets.dart';
 import 'package:todo_app/services/database/database_contract.dart';
 
 import '../task.dart';
 
 class TaskDetailViewModel with ChangeNotifier {
-  Task task;
-  DatabaseContract _databaseContract;
+  Task? task;
+  final DatabaseContract _databaseContract;
   bool _isEdited = false;
 
   TaskDetailViewModel(this._databaseContract);
@@ -24,6 +24,6 @@ class TaskDetailViewModel with ChangeNotifier {
   }
 
   Future<void> deleteTask() async {
-    await _databaseContract.deleteTask(task.id);
+    await _databaseContract.deleteTask(task!.id!);
   }
 }

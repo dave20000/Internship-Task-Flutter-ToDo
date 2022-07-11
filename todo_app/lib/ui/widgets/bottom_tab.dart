@@ -4,7 +4,11 @@ class BottomTab extends StatelessWidget {
   final bool isHomeScreen;
   final Function(int) tabPressed;
   final Function(bool) taskAdded;
-  BottomTab({this.isHomeScreen, this.tabPressed, this.taskAdded});
+  BottomTab({
+    required this.isHomeScreen,
+    required this.tabPressed,
+    required this.taskAdded,
+  });
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -42,8 +46,8 @@ class BottomTab extends StatelessWidget {
               taskAdded(t as bool);
             },
             child: PhysicalModel(
-              color: Theme.of(context).accentColor,
-              shadowColor: Theme.of(context).accentColor,
+              color: Theme.of(context).colorScheme.secondary,
+              shadowColor: Theme.of(context).colorScheme.secondary,
               shape: BoxShape.circle,
               elevation: 5.0,
               child: Padding(

@@ -4,8 +4,8 @@ import 'package:todo_app/services/database/database_contract.dart';
 
 class TasksViewModel with ChangeNotifier {
   final DatabaseContract _databaseContract;
-  Future<List<Task>> _taskList;
-  Future<List<Task>> get taskList => _taskList;
+  Future<List<Task>>? _taskList;
+  Future<List<Task>>? get taskList => _taskList;
 
   TasksViewModel(this._databaseContract);
 

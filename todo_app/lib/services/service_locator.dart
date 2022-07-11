@@ -9,10 +9,9 @@ import 'package:todo_app/services/database/database_provider.dart';
 part 'service_locator.g.dart';
 
 abstract class ServiceLocator {
-  static KiwiContainer container;
+  static KiwiContainer container = KiwiContainer();
 
   static void setup() {
-    container = KiwiContainer();
     _$ServiceLocator()._configure();
   }
 

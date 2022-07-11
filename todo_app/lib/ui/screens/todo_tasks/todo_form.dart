@@ -9,8 +9,8 @@ import 'package:todo_app/ui/widgets/base_widget.dart';
 import 'package:todo_app/ui/widgets/date_selector.dart';
 
 class ToDoFormScreen extends StatefulWidget {
-  final int id;
-  ToDoFormScreen({this.id});
+  final int? id;
+  ToDoFormScreen({required this.id});
 
   @override
   _ToDoFormScreenState createState() => _ToDoFormScreenState();
@@ -19,8 +19,8 @@ class ToDoFormScreen extends StatefulWidget {
 class _ToDoFormScreenState extends State<ToDoFormScreen> {
   final _formKey = GlobalKey<FormState>();
 
-  TextEditingController titleController;
-  TextEditingController detailsController;
+  late TextEditingController titleController;
+  late TextEditingController detailsController;
 
   @override
   void initState() {
@@ -54,16 +54,16 @@ class _ToDoFormScreenState extends State<ToDoFormScreen> {
         model.isCalendarView = true;
         if (widget.id != null) {
           model.isAdd = false;
-          await model.getById(widget.id);
-          model.selectedCateogryIndex = model.task.categoryToEnum().index;
+          await model.getById(widget.id!);
+          model.selectedCategoryIndex = model.task!.categoryToEnum().index;
+          titleController.text = model.task!.title!;
+          detailsController.text = model.task!.details!;
         } else {
           model.isAdd = true;
           model.task = new Task();
-          model.selectedCateogryIndex = 0;
-          model.task.category = Categories.Work.categoryValue();
+          model.selectedCategoryIndex = 0;
+          model.task!.category = Categories.Work.categoryValue();
         }
-        titleController.text = model.task.title;
-        detailsController.text = model.task.details;
       },
       builder: (context, taskModel, child) {
         if (taskModel.task != null) {
@@ -87,8 +87,8 @@ class _ToDoFormScreenState extends State<ToDoFormScreen> {
                                 duration: Duration(milliseconds: 500),
                                 child: taskModel.isCalendarView
                                     ? DateSelector(
-                                        startDate: taskModel.task.taskDate,
-                                        endDate: taskModel.task.endDate,
+                                        startDate: taskModel.task!.taskDate,
+                                        endDate: taskModel.task!.endDate,
                                         getDates: (start, end) {
                                           taskModel.updateDate(start, end);
                                         },
@@ -106,12 +106,12 @@ class _ToDoFormScreenState extends State<ToDoFormScreen> {
                                                 Text(
                                                   DateFormat('yyyy')
                                                           .format(taskModel
-                                                              .task.taskDate)
+                                                              .task!.taskDate!)
                                                           .toString() +
                                                       " " +
                                                       DateFormat('MMM')
                                                           .format(taskModel
-                                                              .task.taskDate)
+                                                              .task!.taskDate!)
                                                           .toString(),
                                                   style: Theme.of(context)
                                                       .textTheme
@@ -120,14 +120,15 @@ class _ToDoFormScreenState extends State<ToDoFormScreen> {
                                                 Text(
                                                   DateFormat('dd')
                                                           .format(taskModel
-                                                              .task.taskDate)
+                                                              .task!.taskDate!)
                                                           .toString() +
                                                       " - " +
                                                       DateFormat('dd')
-                                                          .format(taskModel.task
+                                                          .format(taskModel
+                                                                  .task!
                                                                   .endDate ??
-                                                              taskModel.task
-                                                                  .taskDate)
+                                                              taskModel.task!
+                                                                  .taskDate!)
                                                           .toString(),
                                                   style: Theme.of(context)
                                                       .textTheme
@@ -165,14 +166,17 @@ class _ToDoFormScreenState extends State<ToDoFormScreen> {
                                 ),
                             },
                             onValueChanged: (int val) {
-                              taskModel.selectedCateogryIndex = val;
+                              taskModel.selectedCategoryIndex = val;
                               taskModel.updateCategory(
                                   Categories.values[val].categoryValue());
                             },
-                            groupValue: taskModel.selectedCateogryIndex,
-                            selectedColor: Theme.of(context).accentColor,
-                            borderColor: Theme.of(context).accentColor,
-                            pressedColor: Theme.of(context).accentColor,
+                            groupValue: taskModel.selectedCategoryIndex,
+                            selectedColor:
+                                Theme.of(context).colorScheme.secondary,
+                            borderColor:
+                                Theme.of(context).colorScheme.secondary,
+                            pressedColor:
+                                Theme.of(context).colorScheme.secondary,
                           ),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
@@ -192,7 +196,7 @@ class _ToDoFormScreenState extends State<ToDoFormScreen> {
                                       border: InputBorder.none,
                                     ),
                                     validator: (value) {
-                                      if (value.length < 3) {
+                                      if (value!.length < 3) {
                                         return 'a minimum of 3 characters is required';
                                       }
                                       return null;
@@ -210,7 +214,7 @@ class _ToDoFormScreenState extends State<ToDoFormScreen> {
                                       alignLabelWithHint: true,
                                     ),
                                     validator: (value) {
-                                      if (value.length < 5) {
+                                      if (value!.length < 5) {
                                         return 'a minimum of 5 characters is required';
                                       }
                                       return null;
@@ -233,18 +237,18 @@ class _ToDoFormScreenState extends State<ToDoFormScreen> {
                             child: Text('Save',
                                 style: Theme.of(context).textTheme.button),
                             onPressed: () async {
-                              if (taskModel.task.taskDate != null) {
+                              if (taskModel.task!.taskDate != null) {
                                 if (taskModel.isCalendarView)
                                   taskModel.changeCalendarView();
                                 if (titleController.text.isNotEmpty ||
                                     detailsController.text.isNotEmpty) {
-                                  if (_formKey.currentState.validate()) {
+                                  if (_formKey.currentState!.validate()) {
                                     taskModel.updateTitleAndDetailS(
                                       titleController.text,
                                       detailsController.text,
                                     );
 
-                                    if (taskModel.isAdd) {
+                                    if (taskModel.isAdd!) {
                                       await taskModel.addTask();
                                       showToast(
                                         "New task added succesfully",
@@ -257,7 +261,7 @@ class _ToDoFormScreenState extends State<ToDoFormScreen> {
                                         Colors.greenAccent,
                                       );
                                     }
-                                    _formKey.currentState.reset();
+                                    _formKey.currentState!.reset();
                                     Navigator.pop(context, true);
                                   }
                                 }
@@ -268,7 +272,7 @@ class _ToDoFormScreenState extends State<ToDoFormScreen> {
                                 );
                               }
                             },
-                            color: Theme.of(context).accentColor,
+                            color: Theme.of(context).colorScheme.secondary,
                           ),
                         ),
                       ),

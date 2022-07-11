@@ -2,20 +2,19 @@ import 'dart:core';
 import 'dart:io';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-import 'dart:async';
 import 'package:path_provider/path_provider.dart';
 import 'package:todo_app/models/task.dart';
 import 'package:todo_app/services/database/database_contract.dart';
 
 class DatabaseProvider implements DatabaseContract {
-  static Database _database;
+  static Database? _database;
 
   Future<Database> get database async {
     if (_database != null) {
-      return _database;
+      return _database!;
     }
     _database = await initDatabase();
-    return _database;
+    return _database!;
   }
 
   initDatabase() async {
@@ -32,7 +31,7 @@ class DatabaseProvider implements DatabaseContract {
   Future<List<Task>> getTasks() async {
     try {
       var dbClient = await database;
-      List<Map> jsonTasks = await dbClient.query('tasks');
+      List<Map<String, dynamic>> jsonTasks = await dbClient.query('tasks');
       List<Task> tasks = [];
       if (jsonTasks.length > 0) {
         for (int i = 0; i < jsonTasks.length; i++) {
@@ -71,10 +70,11 @@ class DatabaseProvider implements DatabaseContract {
     }
   }
 
-  Future<Task> getTaskById(int id) async {
+  Future<Task?> getTaskById(int id) async {
     try {
       final db = await database;
-      var taskJson = await db.query("tasks", where: "id = ?", whereArgs: [id]);
+      List<Map<String, dynamic>> taskJson =
+          await db.query("tasks", where: "id = ?", whereArgs: [id]);
       return taskJson.isNotEmpty ? Task.fromJson(taskJson.first) : null;
     } catch (e) {
       close();

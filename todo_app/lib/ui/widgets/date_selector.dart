@@ -3,10 +3,14 @@ import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class DateSelector extends StatelessWidget {
-  final DateTime startDate;
-  final DateTime endDate;
+  final DateTime? startDate;
+  final DateTime? endDate;
   final Function(DateTime, DateTime) getDates;
-  DateSelector({this.startDate, this.endDate, this.getDates});
+  DateSelector({
+    required this.startDate,
+    required this.endDate,
+    required this.getDates,
+  });
   @override
   Widget build(BuildContext context) {
     return TableCalendar(
@@ -20,7 +24,7 @@ class DateSelector extends StatelessWidget {
         formatButtonShowsNext: false,
         leftChevronVisible: false,
         rightChevronVisible: false,
-        titleTextStyle: Theme.of(context).textTheme.headline5,
+        titleTextStyle: Theme.of(context).textTheme.headline5!,
         headerPadding: EdgeInsets.fromLTRB(0, 8, 0, 25),
       ),
       pageJumpingEnabled: false,
@@ -28,38 +32,38 @@ class DateSelector extends StatelessWidget {
       startingDayOfWeek: StartingDayOfWeek.monday,
       daysOfWeekStyle: DaysOfWeekStyle(
         weekdayStyle: TextStyle(
-            color: Theme.of(context).primaryTextTheme.headline6.color),
-        weekendStyle: Theme.of(context).primaryTextTheme.subtitle1,
+            color: Theme.of(context).primaryTextTheme.headline6!.color),
+        weekendStyle: Theme.of(context).primaryTextTheme.subtitle1!,
         dowTextFormatter: (date, locale) =>
             DateFormat.E(locale).format(date)[0],
       ),
       calendarStyle: CalendarStyle(
-        rangeHighlightColor: Theme.of(context).accentColor,
+        rangeHighlightColor: Theme.of(context).colorScheme.secondary,
         defaultDecoration: BoxDecoration(
           shape: BoxShape.rectangle,
         ),
-        defaultTextStyle: Theme.of(context).primaryTextTheme.headline6,
+        defaultTextStyle: Theme.of(context).primaryTextTheme.headline6!,
         todayDecoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(10)),
           border: Border.all(
-            color: Theme.of(context).accentColor,
+            color: Theme.of(context).colorScheme.secondary,
           ),
         ),
-        todayTextStyle: Theme.of(context).primaryTextTheme.headline6,
-        rangeStartTextStyle: Theme.of(context).primaryTextTheme.headline6,
-        withinRangeTextStyle: Theme.of(context).primaryTextTheme.headline6,
-        rangeEndTextStyle: Theme.of(context).primaryTextTheme.headline6,
+        todayTextStyle: Theme.of(context).primaryTextTheme.headline6!,
+        rangeStartTextStyle: Theme.of(context).primaryTextTheme.headline6!,
+        withinRangeTextStyle: Theme.of(context).primaryTextTheme.headline6!,
+        rangeEndTextStyle: Theme.of(context).primaryTextTheme.headline6!,
         selectedDecoration: BoxDecoration(
-          color: Theme.of(context).accentColor,
+          color: Theme.of(context).colorScheme.secondary,
         ),
         rangeStartDecoration: BoxDecoration(
-          color: Theme.of(context).accentColor,
+          color: Theme.of(context).colorScheme.secondary,
         ),
         rangeEndDecoration: BoxDecoration(
-          color: Theme.of(context).accentColor,
+          color: Theme.of(context).colorScheme.secondary,
         ),
         cellMargin: EdgeInsets.all(0),
-        weekendTextStyle: Theme.of(context).primaryTextTheme.subtitle1,
+        weekendTextStyle: Theme.of(context).primaryTextTheme.subtitle1!,
       ),
       firstDay: DateTime.utc(2010, 10, 16),
       lastDay: DateTime.utc(2030, 3, 14),
@@ -69,7 +73,7 @@ class DateSelector extends StatelessWidget {
       calendarFormat: CalendarFormat.month,
       rangeSelectionMode: RangeSelectionMode.toggledOn,
       onRangeSelected: (start, end, focusedDay) {
-        getDates(start, end ?? start);
+        getDates(start!, end ?? start);
       },
     );
   }

@@ -4,7 +4,7 @@ import 'package:todo_app/models/task.dart';
 
 class ToDoCard extends StatelessWidget {
   final Task task;
-  ToDoCard({this.task});
+  ToDoCard({required this.task});
 
   @override
   Widget build(BuildContext context) {
@@ -24,10 +24,10 @@ class ToDoCard extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text("${task.taskDate.day.toString()}",
+                Text("${task.taskDate!.day.toString()}",
                     style: Theme.of(context).textTheme.headline2),
                 const SizedBox(height: 10),
-                Text(DateFormat('MMM').format(task.taskDate),
+                Text(DateFormat('MMM').format(task.taskDate!),
                     style: Theme.of(context).textTheme.headline2),
               ],
             ),
@@ -41,7 +41,7 @@ class ToDoCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    task.title,
+                    task.title!,
                     style: Theme.of(context).textTheme.headline1,
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
@@ -54,7 +54,7 @@ class ToDoCard extends StatelessWidget {
                       child: Text(task.category ?? "default category",
                           style: TextStyle(fontSize: 12, color: Colors.grey))),
                   Text(
-                    task.details,
+                    task.details!,
                     style: TextStyle(fontSize: 14, color: Colors.grey),
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,

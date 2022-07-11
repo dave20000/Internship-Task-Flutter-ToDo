@@ -10,11 +10,11 @@ class _$ServiceLocator extends ServiceLocator {
   @override
   void _configure() {
     final KiwiContainer container = KiwiContainer();
-    container.registerSingleton((c) => ThemeContextViewModel());
-    container.registerFactory((c) => TasksViewModel(c<DatabaseContract>()));
-    container.registerFactory((c) => TaskViewModel(c<DatabaseContract>()));
     container
-        .registerFactory((c) => TaskDetailViewModel(c<DatabaseContract>()));
-    container.registerSingleton<DatabaseContract>((c) => DatabaseProvider());
+      ..registerSingleton((c) => ThemeContextViewModel())
+      ..registerFactory((c) => TasksViewModel(c<DatabaseContract>()))
+      ..registerFactory((c) => TaskViewModel(c<DatabaseContract>()))
+      ..registerFactory((c) => TaskDetailViewModel(c<DatabaseContract>()))
+      ..registerSingleton<DatabaseContract>((c) => DatabaseProvider());
   }
 }
